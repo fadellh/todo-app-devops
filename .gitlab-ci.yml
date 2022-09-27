@@ -5,21 +5,21 @@ stages:
 test job:
     stage: test
     tags:
-        - mac
+        - gcp-shell
     script:
         - echo "I am a unit test!"
 
 build job:
     stage: build
     tags:
-        - mac
+        - gcp-shell
     script:
         - echo "I am a build image!"
 
 environment echoes:
   stage: build
   tags:
-      - mac
+      - gcp-shell
   script:
     - echo "Who am I running as..."
     - whoami
