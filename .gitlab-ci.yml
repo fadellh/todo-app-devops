@@ -29,4 +29,5 @@ environment echoes:
     - echo "Here's what is available in our environment..."
     - env
     - echo "hai"
+    - docker ps -a
 
