@@ -4,16 +4,22 @@ stages:
 
 test job:
     stage: test
+    tags:
+        - golang
     script:
         - echo "I am a unit test!"
 
 build job:
     stage: build
+    tags:
+        - golang
     script:
         - echo "I am a build image!"
 
 environment echoes:
   stage: build
+  tags:
+      - golang
   script:
     - echo "Who am I running as..."
     - whoami
