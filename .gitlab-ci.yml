@@ -31,6 +31,7 @@ build be:
     script:
         - echo "I am a build image!"
         - docker build --pull -t "$REGISTRY_USER/todo-be:latest" ./todo-be
+        - docker images
         - docker push "$REGISTRY_URL/$REGISTRY_USER/todo-be:latest"
 
 
