@@ -23,7 +23,7 @@ build be:
     tags:
         - gcp-shell
     before_script:
-        - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
+        - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" registry.hub.docker.co
     script:
         - echo "I am a build image!"
         - docker build --pull -t todo-be:latest ./todo-be
