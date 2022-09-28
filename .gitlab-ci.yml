@@ -22,7 +22,8 @@ build be:
     script:
         - echo "I am a build image!"
         - pwd
-        - docker build ./tode-be
+        - ls
+        - docker build -t todo-be:latest ./todo-be
 
 
 
