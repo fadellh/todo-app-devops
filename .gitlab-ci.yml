@@ -23,6 +23,7 @@ build be:
     tags:
         - gcp-shell
     before_script:
+        - echo $REGISTRY_USER
         - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" registry.hub.docker.com
     script:
         - echo "I am a build image!"
