@@ -1,33 +1,25 @@
 stages:
-    - test
-    - build
+    - test-be
+    - build-be
 
-test job:
-    stage: test
+test be:
+    stage: test-be
+    image: golang:alpine3.16
     tags:
         - gcp-shell
     script:
-        - echo "I am a unit test!"
+        - echo "testing"
+        - go version
+        - go test ./... -coverprofile=coverage.out
 
-build job:
-    stage: build
+build be:
+    stage: build-be
+    image: golang:alpine3.16
     tags:
         - gcp-shell
     script:
         - echo "I am a build image!"
+        - docker build ./tode-be
 
-environment echoes:
-  stage: build
-  tags:
-      - gcp-shell
-  script:
-    - echo "Who am I running as..."
-    - whoami
-    - echo "Where am I..."
-    - pwd
-    - ls -al
-    - echo "Here's what is available in our environment..."
-    - env
-    - echo "hai"
-    - docker ps -a
+
 
