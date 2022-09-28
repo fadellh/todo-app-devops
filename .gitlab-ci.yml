@@ -13,17 +13,21 @@ test be:
     script:
         - echo "testing"
         - go test ./... -coverprofile=coverage.out
+    artifacts:
+      paths:
+        - "coverage.out"
 
 build be:
     stage: build-be
     image: docker.io/golang:alpine3.16
     tags:
         - gcp-shell
+    before_script:
+        - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
     script:
         - echo "I am a build image!"
-        - pwd
-        - ls
-        - docker build -t todo-be:latest ./todo-be
+        - docker build --pull -t todo-be:latest ./todo-be
+        - docker push todo-be:latest
 
 
 
