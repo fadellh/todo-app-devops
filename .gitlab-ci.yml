@@ -1,10 +1,11 @@
+image: docker.io/golang:alpine3.16
+
 stages:
     - test-be
     - build-be
 
 test be:
     stage: test-be
-    image: docker.io/golang:alpine3.16
     tags:
         - gcp-shell
     before_script:
