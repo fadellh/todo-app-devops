@@ -28,7 +28,7 @@ build be:
     script:
         - echo "I am a build image!"
         - docker build --pull -t todo-be:latest ./todo-be
-        - docker push todo-be:latest
+        - docker push $REGISTRY_USER/todo-be:latest
 
 
 
