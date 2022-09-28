@@ -1,18 +1,18 @@
-image: golang:1.18
 
 stages:
     - test-be
     - build-be
 
 test be:
-    stage: test-be
+    stage: test-be  
+    image: golang:1.18
     tags:
         - gcp-go
     before_script:
         - go version
     script:
         - echo "testing"
-        - go test ./... -coverprofile=coverage.out
+        - go test ./todo-be/... -coverprofile=coverage.out
 
 build be:
     stage: build-be
