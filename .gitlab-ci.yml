@@ -27,8 +27,8 @@ build be:
         - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" registry.hub.docker.com
     script:
         - echo "I am a build image!"
-        - docker build --pull -t todo-be:latest ./todo-be
-        - docker push $REGISTRY_USER/todo-be:latest
+        - docker build --pull -t "$REGISTRY_USER/todo-be:latest" ./todo-be
+        - docker push "$REGISTRY_USER/todo-be:latest"
 
 
 
