@@ -2,6 +2,9 @@ stages:
     - test-be
     - build-be
 
+variables:
+    NAMESPACE: "docker.io"
+
 test be:
     stage: test-be  
     image: golang:1.18
