@@ -1,4 +1,3 @@
-
 stages:
     - test-be
     - build-be
@@ -10,9 +9,10 @@ test be:
         - gcp-go
     before_script:
         - go version
+        - cd todo-be
     script:
         - echo "testing"
-        - go test ./todo-be/... -coverprofile=coverage.out
+        - go test ./... -coverprofile=coverage.out
 
 build be:
     stage: build-be
