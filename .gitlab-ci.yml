@@ -27,12 +27,11 @@ build be:
         - gcp-shell
     before_script:
         - echo $REGISTRY_USER
-        - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" docker.io
+        - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY_URL
     script:
         - echo "I am a build image!"
         - docker build --pull -t "$REGISTRY_USER/todo-be:latest" ./todo-be
-        - docker images
-        - docker push fadellh/todo-be:latest
+        - docker push $REGISTRY_USER/todo-be:latest
 
 
 
