@@ -21,6 +21,7 @@ build be:
         - gcp-shell
     script:
         - echo "I am a build image!"
+        - pwd
         - docker build ./tode-be
 
 
