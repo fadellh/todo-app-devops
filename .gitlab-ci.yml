@@ -27,6 +27,7 @@ test fe:
     before_script:
         - node -v
         - cd todo-fe
+        - npm install --save-dev jest
     script:
         - echo "testing"
         - npm test --collect-coverage
