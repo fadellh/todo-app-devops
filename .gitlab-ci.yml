@@ -6,7 +6,8 @@ variables:
     REGISTRY_URL: "docker.io"
 
 test be:
-    stage: testing  
+    stage: testing
+    image: golang:1.18  
     tags:
         - gcp-go
     before_script:
@@ -20,8 +21,9 @@ test be:
         - "coverage.out"
 test fe:
     stage: testing 
+    image: node:10.15.3
     tags:
-        - gcp-node
+        - gcp-go
     before_script:
         - node -v
         - cd todo-fe
