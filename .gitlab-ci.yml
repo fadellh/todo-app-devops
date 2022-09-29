@@ -43,9 +43,12 @@ be code quality:
         artifacts: true
     variables: 
       TEST_THRESHOLD: $TEST_THRESHOLD
-    script: 
+    before_script:
+        - go version
+        - cd todo-be
         - echo "quality check"
         - echo "Threshold  -> $TEST_THRESHOLD %"
+    script: 
         - totalCoverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
         - echo "Current test coverage -> $totalCoverage %"
         - > 
