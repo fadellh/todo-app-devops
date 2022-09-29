@@ -33,7 +33,7 @@ test fe:
         - "coverage.out"
 
 build be:
-    stage: build-be
+    stage: build
     tags:
         - gcp-shell
     only:
