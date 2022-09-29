@@ -68,6 +68,7 @@ build be:
         - gcp-shell
     only:
         - main
+        - cicd
     before_script:
         - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY_URL
     script:
