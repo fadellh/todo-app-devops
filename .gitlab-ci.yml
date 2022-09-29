@@ -1,13 +1,12 @@
 stages:
-    - test-be
-    - build-be
+    - testing
+    - build
 
 variables:
     REGISTRY_URL: "docker.io"
 
 test be:
-    stage: test-be  
-    image: golang:1.18
+    stage: testing  
     tags:
         - gcp-go
     before_script:
@@ -19,14 +18,27 @@ test be:
     artifacts:
       paths:
         - "coverage.out"
+test fe:
+    stage: testing 
+    tags:
+        - gcp-node
+    before_script:
+        - node -v
+        - cd todo-fe
+    script:
+        - echo "testing"
+        - npm test --collect-coverage
+    artifacts:
+      paths:
+        - "coverage.out"
 
 build be:
     stage: build-be
-    image: docker.io/golang:alpine3.16
     tags:
         - gcp-shell
+    only:
+        - main
     before_script:
-        - echo $REGISTRY_USER
         - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY_URL
     script:
         - echo "I am a build image!"
