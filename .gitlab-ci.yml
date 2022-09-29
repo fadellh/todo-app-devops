@@ -48,6 +48,7 @@ be code quality:
         - cd todo-be
         - echo "quality check"
         - echo "Threshold  -> $TEST_THRESHOLD %"
+        - RUN apk update && apk add bash
     script: 
         - totalCoverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
         - echo "Current test coverage -> $totalCoverage %"
