@@ -39,7 +39,7 @@ be code quality:
     tags:
       - gcp-go
     needs:
-      - job: testing
+      - job: test be
         artifacts: true
     variables: 
       TEST_THRESHOLD: $TEST_THRESHOLD
