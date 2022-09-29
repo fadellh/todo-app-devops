@@ -36,6 +36,7 @@ test fe:
 
 be code quality: 
     stage: quality-check
+    image: golang:1.18  
     tags:
       - gcp-go
     needs:
