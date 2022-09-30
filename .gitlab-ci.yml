@@ -72,6 +72,8 @@ build be:
     stage: build
     tags:
         - gcp-shell
+    needs:
+        - job: be code quality
     only:
         - main
         - cicd
