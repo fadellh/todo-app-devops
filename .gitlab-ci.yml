@@ -108,6 +108,7 @@ k8s-deploy:
   script:
     - echo "login with gcp cloud shell"
     - echo "set project"
+    - echo "pull image from docker"
     - echo "kubectl apply"
     - echo "set image"
 
