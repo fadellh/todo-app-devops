@@ -1,7 +1,13 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
 stages:
     - testing
     - quality-check
     - build
+    - deploy
 
 variables:
     REGISTRY_URL: "docker.io"
@@ -76,5 +82,30 @@ build be:
         - docker build --pull -t "$REGISTRY_USER/todo-be:latest" ./todo-be
         - docker push $REGISTRY_USER/todo-be:latest
 
+build fe:
+    stage: build
+    tags:
+        - gcp-shell
+    only:
+        - main
+        - cicd
+    before_script:
+        - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY_URL
+    script:
+        - echo "I am a build image!"
+        - docker build --pull -t "$REGISTRY_USER/todo-fe:latest" ./todo-fe
+        - docker push $REGISTRY_USER/todo-fe:latest
 
+k8s-deploy:
+  stage: deploy
+  tags:
+    - gcp-shell
+  only: 
+    - main
+    - cicd
+  script:
+    - echo "login with gcp cloud shell"
+    - echo "set project"
+    - echo "kubectl apply"
+    - echo "set image"
 
