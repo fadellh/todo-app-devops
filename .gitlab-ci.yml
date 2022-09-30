@@ -110,5 +110,5 @@ k8s-deploy:
     - echo "set project"
     - echo "pull image from docker"
     - echo "kubectl apply"
-    - echo "set image"
+    - echo "set images"
 
