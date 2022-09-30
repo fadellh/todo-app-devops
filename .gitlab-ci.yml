@@ -1,31 +1,114 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
 stages:
-    - test
+    - testing
+    - quality-check
     - build
+    - deploy
 
-test job:
-    stage: test
+variables:
+    REGISTRY_URL: "docker.io"
+
+test be:
+    stage: testing
+    image: golang:1.18  
     tags:
-        - golang
+        - gcp-go
+    before_script:
+        - go version
+        - cd todo-be
     script:
-        - echo "I am a unit test!"
+        - echo "testing"
+        - go test ./... -coverprofile=coverage.out
+    artifacts:
+      paths:
+        - "todo-be/coverage.out"
+test fe:
+    stage: testing 
+    image: node:10.15.3
+    tags:
+        - gcp-go
+    before_script:
+        - node -v
+        - cd todo-fe
+    script:
+        - echo "testing"
+    artifacts:
+      paths:
+        - "coverage.out"
 
-build job:
+be code quality: 
+    stage: quality-check
+    image: golang:1.18  
+    tags:
+      - gcp-go
+    needs:
+      - job: test be
+        artifacts: true
+    variables: 
+      TEST_THRESHOLD: $TEST_THRESHOLD
+    before_script:
+        - go version
+        - cd todo-be
+        - echo "quality check"
+        - echo "Threshold  -> $TEST_THRESHOLD %"
+        - RUN apk update && apk add bash
+    script: 
+        - totalCoverage=`go tool cover -func=coverage.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
+        - echo "Current test coverage -> $totalCoverage %"
+        - > 
+          if (( $(echo "$totalCoverage $TEST_THRESHOLD" | awk '{print ($1 > $2)}') )); then
+              echo "OK"
+          else
+              echo "Current test coverage is below threshold. Please add more unit tests or adjust threshold to a lower value."
+              echo "Failed"
+              exit 1
+          fi
+
+build be:
     stage: build
     tags:
-        - golang
+        - gcp-shell
+    needs:
+        - job: be code quality
+    only:
+        - main
+        - cicd
+    before_script:
+        - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY_URL
     script:
         - echo "I am a build image!"
+        - docker build --pull -t "$REGISTRY_USER/todo-be:latest" ./todo-be
+        - docker push $REGISTRY_USER/todo-be:latest
 
-environment echoes:
-  stage: build
+build fe:
+    stage: build
+    tags:
+        - gcp-shell
+    only:
+        - main
+        - cicd
+    before_script:
+        - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" $REGISTRY_URL
+    script:
+        - echo "I am a build image!"
+        - docker build --pull -t "$REGISTRY_USER/todo-fe:latest" ./todo-fe
+        - docker push $REGISTRY_USER/todo-fe:latest
+
+k8s-deploy:
+  stage: deploy
   tags:
-      - golang
+    - gcp-shell
+  only: 
+    - main
+    - cicd
   script:
-    - echo "Who am I running as..."
-    - whoami
-    - echo "Where am I..."
-    - pwd
-    - ls -al
-    - echo "Here's what is available in our environment..."
-    - env
+    - echo "login with gcp cloud shell"
+    - echo "set project"
+    - echo "pull image from docker"
+    - echo "kubectl apply"
+    - echo "set image"
 
