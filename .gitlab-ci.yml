@@ -100,16 +100,16 @@ build fe:
 
 k8s-deploy:
   stage: deploy
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
   tags:
     - gcp-shell
   only: 
     - main
     - cicd
   script:
-    - echo "login with gcp cloud shell"
-    - echo "set project"
-    - echo "pull image from docker"
-    - echo "kubectl apply"
-    - kubectl get all
-    - echo "set images"
+    - kubectl config get-contexts
+    - kubectl get pods
+
 
