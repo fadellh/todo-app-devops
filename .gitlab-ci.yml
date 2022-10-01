@@ -99,21 +99,27 @@ build fe:
         - docker push $REGISTRY_USER/todo-fe:latest
 
 k8s-deploy:
-  stage: deploy
-  image:
-    name: bitnami/kubectl:latest
-    entrypoint: ['']
-  tags:
-    - gcp-shell
-  only: 
-    - main
-    - cicd
-  before_script:
-    - kubectl config get-contexts
-    - kubectl get pods | grep todo
-    - docker images | grep todo
-  script:
-    - docker pull $REGISTRY_USER/todo-be:latest
-    - kubectl delete pods -l app=todo-be
+    stage: deploy
+    image:
+      name: bitnami/kubectl:latest
+      entrypoint: ['']
+    tags:
+      - build be
+      - build fe
+    needs:
+      - job: be code quality
+    only: 
+      - main
+      - cicd
+    before_script:
+      - kubectl config get-contexts
+      - kubectl get pods | grep todo
+      - docker images | grep todo
+    script:
+      - docker pull $REGISTRY_USER/todo-be:latest
+      - docker pull $REGISTRY_USER/todo-fe:latest
+      - kubectl delete pods -l app=todo-be
+      - kubectl delete pods -l app=todo-fe
+      - kubectl get pods -o wide | grep todo
 
 
