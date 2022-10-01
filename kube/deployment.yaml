@@ -30,7 +30,7 @@ spec:
               value: "5432"
             - name: DB_DATABASE
               value: belajar
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
   strategy:
