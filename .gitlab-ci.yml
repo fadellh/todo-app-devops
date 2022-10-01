@@ -111,5 +111,6 @@ k8s-deploy:
   script:
     - kubectl config get-contexts
     - kubectl get pods
+    - docker images
 
 
