@@ -108,9 +108,12 @@ k8s-deploy:
   only: 
     - main
     - cicd
-  script:
+  before_script:
     - kubectl config get-contexts
-    - kubectl get pods
-    - docker images
+    - kubectl get pods | grep todo
+    - docker images | grep todo
+  script:
+    - docker pull $REGISTRY_USER/todo-be:latest" 
+    - kubectl delete pods -l app=todo-be
 
 
